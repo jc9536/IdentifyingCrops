@@ -5,7 +5,7 @@ DS.UA.301 - Advanced Topic in Data Science: ML in Climate Change Assignment #3
 Here you will use remote sensing data collected from the Sentinel-2 satellite to find crops. Algorithms that can identify crops are helpful in assessing land use changes associated with agriculture. 
 
 Sentinel-2 collects data in 13 spectral bands (regions of the electromagnetic spectrum), as shown here:
-![image.png](attachment:image.png)
+![image.png](images/image.png)
 
 To identify crops, some bands are more helpful than others. For example, B2-B4 are the visible spectrum and reflect what we see, near-infrared wavelengths can be sensitive to chlorophyll and short wave infrared (SWIR) wavelengths are sensitive to water content. Bands such as B1 and B10, however, respond more to clouds and particles in the air and are therefore less useful here. 
 
@@ -21,7 +21,7 @@ Download the npz [here](https://drive.google.com/file/d/14jJCC0srUmoAIWWOESE-s4m
 
 ### Import Libraries & Data 
 
-```{python}
+```python
 # Import packages and libraries 
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
@@ -32,14 +32,14 @@ import pandas as pd
 import numpy as np
 ```
 
-```{python}
+```python
 # Load the data 
 data_path = 'togo_crops_data.npz'
 data = np.load(data_path)
 X_train = data['arr_0']; y_train = data['arr_1']; X_test = data['arr_2']; y_test = data['arr_3']
 ```
 
-```{python}
+```python
 # Create dataframes from data for plotting 
 cols = ['Feature_1', 'Feature_2', 'Feature_3', 'Feature_4',
            'Feature_5', 'Feature_6', 'Feature_7', 'Feature_8',
@@ -59,11 +59,11 @@ test_df.columns = cols
 ```
 
 ## Plot Feature Frequency 
-Plot histograms of the training values of each feature. Specifically, for each feature, make a single plot that contains two histograms: one of the values for locations with crops and one for those without *(1 pt)*. Set the bins the same for each *(.5 pt)* and reduce the transparency of each so that both are visible *(.5 pt)*. E.g., they should look something like this: ![image-2.png](attachment:image-2.png)
+Plot histograms of the training values of each feature. Specifically, for each feature, make a single plot that contains two histograms: one of the values for locations with crops and one for those without *(1 pt)*. Set the bins the same for each *(.5 pt)* and reduce the transparency of each so that both are visible *(.5 pt)*. E.g., they should look something like this: ![image-2.png](images/image2.png)
 
 Based on these plots, do you think the first feature would be useful for identifying crops? What about the 8th? *(.5 pt each)*
 
-```{python}
+```python
 # Create histogram plot 
 
 # Set seaborn figure and palette 
@@ -122,13 +122,13 @@ plt.show()
 ## Logistic Regression Model for All Features
 Train a logistic regression model on the training data to classify each data point as containing crops or not *(1 pt)*. Evaluate the model separately on both the training and test set according to the overall classification accuracy. Because this a binary classification model, we can also use more fine-grained measures of performance such as [precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall). Evaluate the model on these metrics as well *(.5 pt for each metric for training and test - 3 pts total)*.
 
-```{python}
+```python
 sc_x = StandardScaler()
 X_train = sc_x.fit_transform(X_train)
 X_test = sc_x.transform(X_test)
 ```
 
-```{python}
+```python
 # Instantiate Logistic Regression Model 
 model = LogisticRegression()
 
@@ -153,15 +153,15 @@ print('Precision Score of logistic regression classifier on test set: {:.3f}'.fo
 print('Recall Score of logistic regression classifier on test set: {:.3f}'.format(
     recall_score(y_test, y_test_pred)))
 ```
-```
-Accuracy of logistic regression classifier on train set: 0.748
-Precision Score of logistic regression classifier on train set: 0.754
-Recall Score of logistic regression classifier on train set: 0.804
 
-Accuracy of logistic regression classifier on test set: 0.703
-Precision Score of logistic regression classifier on test set: 0.547
-Recall Score of logistic regression classifier on test set: 0.821
-```
+Accuracy of logistic regression classifier on train set: 0.748  
+Precision Score of logistic regression classifier on train set: 0.754  
+Recall Score of logistic regression classifier on train set: 0.804  
+
+Accuracy of logistic regression classifier on test set: 0.703  
+Precision Score of logistic regression classifier on test set: 0.547  
+Recall Score of logistic regression classifier on test set: 0.821  
+
 
 Looking at the results on the test data, which is your model better at: catching true crops that exist or not labeling non-crops as crops? *(1 pt)*
 
@@ -170,7 +170,7 @@ Looking at the results on the test data, which is your model better at: catching
 ## Feature Selection Logistic Regression
 Create two new data sets from this data: one that only contains the 2nd through 11th features and one that contains the remaining three features *(.5 pt for each)*. Train two new logistic regression models with these two new datasets and report their test accuracy *(.5 pt for each)*. In this case, does the model with more features perform better? Why or why not? *(1pt)*
 
-```{python}
+```python
 # Create new dataframes 
 
 # Features 2 - 11
@@ -186,7 +186,7 @@ feat2_X_train_df = train_df[['Feature_1', 'Feature_12']].copy()
 feat2_X_test_df = test_df[['Feature_1', 'Feature_12']].copy()
 ```
 
-```{python}
+```python
 # Preprocessing Data
 feat1_X_train_df = sc_x.fit_transform(feat1_X_train_df)
 feat1_X_test_df = sc_x.transform(feat1_X_test_df)
@@ -194,7 +194,7 @@ feat2_X_train_df = sc_x.fit_transform(feat2_X_train_df)
 feat2_X_test_df = sc_x.transform(feat2_X_test_df)
 ```
 
-```
+```python
 # Instantiate Logistic Regression Model for Features 2 - 11
 feat1_model = LogisticRegression()
 
@@ -210,13 +210,12 @@ print('Precision Score of logistic regression classifier on test set with Featur
 print('Recall Score of logistic regression classifier on test set with Features 2 - 11: {:.3f}'.format(
     recall_score(y_test, y_test_pred)))
 ```
-```
-Accuracy of logistic regression classifier on test set with Features 2 - 11: 0.686
-Precision Score of logistic regression classifier on test set with Features 2 - 11: 0.530
-Recall Score of logistic regression classifier on test set with Features 2 - 11: 0.830
-```
 
-```{python}
+Accuracy of logistic regression classifier on test set with Features 2 - 11: 0.686  
+Precision Score of logistic regression classifier on test set with Features 2 - 11: 0.530  
+Recall Score of logistic regression classifier on test set with Features 2 - 11: 0.830  
+
+```python
 # Instantiate Logistic Regression Model for Features 1 & 12
 feat2_model = LogisticRegression()
 
@@ -232,13 +231,12 @@ print('Precision Score of logistic regression classifier on test set with Featur
 print('Recall Score of logistic regression classifier on test set with Features 1 & 12: {:.3f}'.format(
     recall_score(y_test, y_test_pred)))
 ```
-```
-Accuracy of logistic regression classifier on test set with Features 1 & 12: 0.788
-Precision Score of logistic regression classifier on test set with Features 1 & 12: 0.650
-Recall Score of logistic regression classifier on test set with Features 1 & 12: 0.840
-```
 
-```{python}
+Accuracy of logistic regression classifier on test set with Features 1 & 12: 0.788  
+Precision Score of logistic regression classifier on test set with Features 1 & 12: 0.650  
+Recall Score of logistic regression classifier on test set with Features 1 & 12: 0.840  
+
+```python
 # Create a table of accuracy, precision & recall scores for analysis 
 score_table = pd.DataFrame({
     'Accuracy Score': [0.748, 0.703, 0.686, 0.788],
