@@ -1,5 +1,6 @@
 # IdentifyingCrops
-DS.UA.301 - Advanced Topic in Data Science: ML in Climate Change Assignment #3
+DS.UA.301 - Advanced Topic in Data Science: ML in Climate Change Assignment #3  
+Name: Jaimie Chin  
 
 ## Background
 Here you will use remote sensing data collected from the Sentinel-2 satellite to find crops. Algorithms that can identify crops are helpful in assessing land use changes associated with agriculture. 
