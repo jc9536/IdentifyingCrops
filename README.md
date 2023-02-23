@@ -162,6 +162,7 @@ Accuracy of logistic regression classifier on test set: 0.703
 Precision Score of logistic regression classifier on test set: 0.547  
 Recall Score of logistic regression classifier on test set: 0.821  
 
+---
 
 Looking at the results on the test data, which is your model better at: catching true crops that exist or not labeling non-crops as crops? *(1 pt)*
 
