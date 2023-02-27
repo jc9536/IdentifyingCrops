@@ -20,7 +20,7 @@ The data contains 1290 data points in the training set and 306 in the test set. 
 
 Download the npz [here](https://drive.google.com/file/d/14jJCC0srUmoAIWWOESE-s4mWbMq3OrH9/view?usp=sharing) and unpack it as below. 
 
-### Import Libraries & Data 
+## Import Libraries & Data 
 
 ```python
 # Import packages and libraries 
@@ -62,7 +62,6 @@ test_df.columns = cols
 ## Plot Feature Frequency 
 Plot histograms of the training values of each feature. Specifically, for each feature, make a single plot that contains two histograms: one of the values for locations with crops and one for those without *(1 pt)*. Set the bins the same for each *(.5 pt)* and reduce the transparency of each so that both are visible *(.5 pt)*. E.g., they should look something like this: ![image-2.png](images/image2.png)
 
-Based on these plots, do you think the first feature would be useful for identifying crops? What about the 8th? *(.5 pt each)*
 
 ```python
 # Create histogram plot 
@@ -118,7 +117,10 @@ plt.show()
 ```
 ![Feature Plots](images/FeaturePlots.png)
 
-*RESPONSE TO BE INCLUDED HERE*
+### Based on these plots, do you think the first feature would be useful for identifying crops? What about the 8th? *(.5 pt each)*
+Yes, I think that the first feature would be useful for identifying crops because there is less of an overlap between the two histograms of locations with crops and locations without crops. For example, looking at the histogram for Feature 1, it is more likely for a location to have crops when the value of Feature 1 is below 0.
+
+No, I do not think Feature 8 would be useful for identifying crops because there is a greater overlap between the two histograms of locations with crops and locations without crops. From the histogram, it seems that values of Feature 8 all have a likely chance of having locations with crops and without crops. 
 
 ## Logistic Regression Model for All Features
 Train a logistic regression model on the training data to classify each data point as containing crops or not *(1 pt)*. Evaluate the model separately on both the training and test set according to the overall classification accuracy. Because this a binary classification model, we can also use more fine-grained measures of performance such as [precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall). Evaluate the model on these metrics as well *(.5 pt for each metric for training and test - 3 pts total)*.
@@ -165,9 +167,15 @@ Recall Score of logistic regression classifier on test set: 0.821
 
 ---
 
-Looking at the results on the test data, which is your model better at: catching true crops that exist or not labeling non-crops as crops? *(1 pt)*
+### Looking at the results on the test data, which is your model better at: catching true crops that exist or not labeling non-crops as crops? *(1 pt)*
 
-*RESPONSE TO GO HERE LATER*
+Looking at the results on the test data, our model is better at **catching true crops**. This is because the Recall score, which represents the number of positive predictions made out of all positive examples in the dataset, is a higher value than the Precision Score, which represents the number of positive class predictions that actually belong to the positive class.  
+
+In other words, the Recall Score indicates the ratio of labeling true crops as crops to labeling true crops as crops and true crops as non-crops. The Precision score indicates the ratio of labeling true crops as crops to labeling true crops and non-crops as crops. 
+
+Since our Recall Score is higher, this tells us that the number of true crops as crops labels is nearly identical to the number of true crops as crops and true crops as non-crops labels. Meaning, the number of true crops as non-crops labels (False Negatives) are rather few, so our model is better at catching true crops that exist. 
+
+Since our Precision Score is lower, this tells us that the number of true crops as crops labels is almost half of the number of true crops and non-crops as crops labels. Meaning, the number of non-crops as crops labels (False Positives) is almost identical to the number of true crops as crops (True Positives), so our model is worse as not labeling non-crops as crops. 
 
 ## Feature Selection Logistic Regression
 Create two new data sets from this data: one that only contains the 2nd through 11th features and one that contains the remaining three features *(.5 pt for each)*. Train two new logistic regression models with these two new datasets and report their test accuracy *(.5 pt for each)*. In this case, does the model with more features perform better? Why or why not? *(1pt)*
@@ -253,3 +261,6 @@ score_table = pd.DataFrame({
 score_table
 ```
 ![Score Table](images/ScoreTable.png)
+
+### In this case, does the model with more features perform better? Why or why not? *(1pt)*
+The model with more features performs **worse** compared to the model that uses only feature 1 & 12 *and* the model that uses all the features in the test set. This is most likely the case as the model with features 2 - 11 is overfitting the training data with features that are less important in determining locations with and without crops in the test data. In fact, given the accuracy, precision, and recall score of the model with Features 1 & 12 compared to the model with all features, Features 1 & 12 seems to be the most important when determining the accuracy of locations with crops and without crops. It is most likely that the model with all features and Features 2 - 11 contain uneccesary/unhelpful features in order to determine crop location.
