@@ -178,22 +178,22 @@ Since our Recall Score is higher, this tells us that the number of true crops as
 Since our Precision Score is lower, this tells us that the number of true crops as crops labels is almost half of the number of true crops and non-crops as crops labels. Meaning, the number of non-crops as crops labels (False Positives) is almost identical to the number of true crops as crops (True Positives), so our model is worse as not labeling non-crops as crops. 
 
 ## Feature Selection Logistic Regression
-Create two new data sets from this data: one that only contains the 2nd through 11th features and one that contains the remaining three features *(.5 pt for each)*. Train two new logistic regression models with these two new datasets and report their test accuracy *(.5 pt for each)*. In this case, does the model with more features perform better? Why or why not? *(1pt)*
+Create two new data sets from this data: one that only contains the 3rd through 11th features and one that contains the remaining three features *(.5 pt for each)*. Train two new logistic regression models with these two new datasets and report their test accuracy *(.5 pt for each)*. In this case, does the model with more features perform better? Why or why not? *(1pt)*
 
 ```python
 # Create new dataframes 
 
-# Features 2 - 11
-feat1_X_train_df = train_df[['Feature_2', 'Feature_3', 'Feature_4',
+# Features 3 - 11
+feat1_X_train_df = train_df[['Feature_3', 'Feature_4',
                    'Feature_5', 'Feature_6', 'Feature_7', 'Feature_8',
                    'Feature_9', 'Feature_10', 'Feature_11']].copy()
-feat1_X_test_df = test_df[['Feature_2', 'Feature_3', 'Feature_4',
+feat1_X_test_df = test_df[['Feature_3', 'Feature_4',
                            'Feature_5', 'Feature_6', 'Feature_7', 'Feature_8',
                            'Feature_9', 'Feature_10', 'Feature_11']].copy()
 
-# Features 1 & 12
-feat2_X_train_df = train_df[['Feature_1', 'Feature_12']].copy()
-feat2_X_test_df = test_df[['Feature_1', 'Feature_12']].copy()
+# Features 1, 2 & 12
+feat2_X_train_df = train_df[['Feature_1', 'Feature_2', 'Feature_12']].copy()
+feat2_X_test_df = test_df[['Feature_1', 'Feature_2', 'Feature_12']].copy()
 ```
 
 ```python
@@ -213,17 +213,17 @@ feat1_model.fit(feat1_X_train_df, y_train)
 
 # Assess the test data
 y_test_pred = feat1_model.predict(feat1_X_test_df)
-print('\nAccuracy of logistic regression classifier on test set with Features 2 - 11: {:.3f}'.format(
+print('\nAccuracy of logistic regression classifier on test set with Features 3 - 11: {:.3f}'.format(
     accuracy_score(y_test, y_test_pred)))
-print('Precision Score of logistic regression classifier on test set with Features 2 - 11: {:.3f}'.format(
+print('Precision Score of logistic regression classifier on test set with Features 3 - 11: {:.3f}'.format(
     precision_score(y_test, y_test_pred)))
-print('Recall Score of logistic regression classifier on test set with Features 2 - 11: {:.3f}'.format(
+print('Recall Score of logistic regression classifier on test set with Features 3 - 11: {:.3f}'.format(
     recall_score(y_test, y_test_pred)))
 ```
 
-Accuracy of logistic regression classifier on test set with Features 2 - 11: 0.686  
-Precision Score of logistic regression classifier on test set with Features 2 - 11: 0.530  
-Recall Score of logistic regression classifier on test set with Features 2 - 11: 0.830  
+Accuracy of logistic regression classifier on test set with Features 3 - 11: 0.690  
+Precision Score of logistic regression classifier on test set with Features 3 - 11: 0.533  
+Recall Score of logistic regression classifier on test set with Features 3 - 11: 0.849  
 
 ```python
 # Instantiate Logistic Regression Model for Features 1 & 12
@@ -234,28 +234,27 @@ feat2_model.fit(feat2_X_train_df, y_train)
 
 # Assess the test data
 y_test_pred = feat2_model.predict(feat2_X_test_df)
-print('\nAccuracy of logistic regression classifier on test set with Features 1 & 12: {:.3f}'.format(
+print('\nAccuracy of logistic regression classifier on test set with Features 1, 2 & 12: {:.3f}'.format(
     accuracy_score(y_test, y_test_pred)))
-print('Precision Score of logistic regression classifier on test set with Features 1 & 12: {:.3f}'.format(
-    precision_score(y_test, y_test_pred)))
-print('Recall Score of logistic regression classifier on test set with Features 1 & 12: {:.3f}'.format(
+print('Precision Score of logistic regression classifier on test set with Features 1, 2 & 12: {:.3f}'.format(precision_score(y_test, y_test_pred)))
+print('Recall Score of logistic regression classifier on test set with Features 1, 2 & 12: {:.3f}'.format(
     recall_score(y_test, y_test_pred)))
 ```
 
-Accuracy of logistic regression classifier on test set with Features 1 & 12: 0.788  
-Precision Score of logistic regression classifier on test set with Features 1 & 12: 0.650  
-Recall Score of logistic regression classifier on test set with Features 1 & 12: 0.840  
+Accuracy of logistic regression classifier on test set with Features 1, 2 & 12: 0.801  
+Precision Score of logistic regression classifier on test set with Features 1, 2 & 12: 0.680  
+Recall Score of logistic regression classifier on test set with Features 1, 2 & 12: 0.802  
 
 ```python
 # Create a table of accuracy, precision & recall scores for analysis 
 score_table = pd.DataFrame({
-    'Accuracy Score': [0.748, 0.703, 0.686, 0.788],
-    'Precision Score': [0.754, 0.547, 0.530, 0.650],
-    'Recall Score': [0.804, 0.821, 0.830, 0.840]
+    'Accuracy Score': [0.748, 0.703, 0.690, 0.801],
+    'Precision Score': [0.754, 0.547, 0.533, 0.680],
+    'Recall Score': [0.804, 0.821, 0.849, 0.802]
 }, index=['All Features Train Set',
           'All Features Test Set',
-          'Features 2 - 11 Test Set',
-          'Features 1 & 12 Test Set'])
+          'Features 3 - 11 Test Set',
+          'Features 1, 2 & 12 Test Set'])
 
 # Show table 
 score_table
@@ -263,4 +262,4 @@ score_table
 ![Score Table](images/ScoreTable.png)
 
 ### In this case, does the model with more features perform better? Why or why not? *(1pt)*
-The model with more features performs **worse** compared to the model that uses only feature 1 & 12 *and* the model that uses all the features in the test set. This is most likely the case as the model with features 2 - 11 is overfitting the training data with features that are less important in determining locations with and without crops in the test data. In fact, given the accuracy, precision, and recall score of the model with Features 1 & 12 compared to the model with all features, Features 1 & 12 seems to be the most important when determining the accuracy of locations with crops and without crops. It is most likely that the model with all features and Features 2 - 11 contain uneccesary/unhelpful features in order to determine crop location.
+The model with more features performs **worse** compared to the model that uses only Features 1, 2 & 12 *and* the model that uses all the features in the test set. This is most likely the case as the model with features 3 - 11 is overfitting the training data with features that are less important in determining locations with and without crops in the test data. In fact, given the accuracy, precision, and recall score of the model with Features 1, 2 & 12 compared to the model with all features, Features 1, 2 & 12 seems to be the most important when determining the accuracy of locations with crops and without crops. It is most likely that the model with all features and Features 3 - 11 contain unnecessary/unhelpful features in order to determine crop location.
